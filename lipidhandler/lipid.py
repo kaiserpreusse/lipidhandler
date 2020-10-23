@@ -13,6 +13,7 @@ class Lipid:
     def __init__(self, lipidclass: LipidClass = None, residues: ResidueList = None):
         self.residues = residues
         self.lipidclass = lipidclass
+        self._input = None
 
     def swisslipids_abbreviation(self, summed: bool = False) -> str:
         """
@@ -59,6 +60,8 @@ class Lipid:
             lipidclass = LipidClass.parse(lipid_class_name)
             residuelist = ResidueList.parse(residue_string)
 
-            return cls(lipidclass, residuelist)
+            lipid = cls(lipidclass, residuelist)
+            lipid._input = string
+            return lipid
 
 
