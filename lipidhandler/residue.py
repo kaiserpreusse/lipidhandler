@@ -44,16 +44,11 @@ class Residue:
         modification = False
         # match if string does not start with digit
         if not re.match('^[0-9]', string):
-            print(string)
             # get index of first digit
             index_first_digit = re.search('[0-9]', string).span()[0]
-            print(index_first_digit)
             prefix = string[:index_first_digit]
-            print(prefix)
             modification = ResidueModification(prefix)
-            print(modification)
             string = string[index_first_digit:]
-            print(string)
 
 
         log.debug(string)
