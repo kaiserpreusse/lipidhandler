@@ -1,4 +1,5 @@
 from lipidhandler.residuelist import ResidueList
+from lipidhandler.residue import Residue
 
 
 def test_residuelist_parse():
@@ -45,3 +46,13 @@ def test_residuelist_parse():
     assert residuelist[1].double_bonds == 1
     assert residuelist[1].oxidation == 0
     assert residuelist[1].olinked is False
+
+
+def test_residuelist_sum():
+    r1 = Residue(18, 2)
+    r2 = Residue(12, 3)
+
+    residuelist = ResidueList([r1, r2])
+
+    assert residuelist.total_double_bonds == 5
+    assert residuelist.total_carbon_atoms == 30

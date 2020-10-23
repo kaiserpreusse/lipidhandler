@@ -20,6 +20,32 @@ class ResidueList:
     def __iter__(self):
         return iter(self.residues)
 
+    @property
+    def total_carbon_atoms(self) -> int:
+        """
+        Sum of all carbon atoms in this ResidueList.
+        """
+        carbon_atoms = 0
+        for residue in self.residues:
+            carbon_atoms += residue.carbon_atoms
+        return carbon_atoms
+
+    @property
+    def total_double_bonds(self) -> int:
+        """
+        Sum of all double bonds in this ResidueList
+        """
+        double_bonds = 0
+        for residue in self.residues:
+            double_bonds += residue.double_bonds
+        return double_bonds
+
+    def sum(self):
+        """
+        Return sum of carbon atoms and double bonds of all Residues in this ResidueList as a Residue.
+        """
+        return Residue(self.total_carbon_atoms, self.total_double_bonds)
+
     @classmethod
     def parse(cls, string: str) -> ResidueList:
         """
@@ -57,7 +83,3 @@ class ResidueList:
             )
 
         return cls(residues)
-
-
-
-

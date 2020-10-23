@@ -3,6 +3,7 @@ import logging
 
 from lipidhandler.residuelist import ResidueList
 from lipidhandler.lipidclass import LipidClass
+from lipidhandler.residue import Residue
 
 log = logging.getLogger(__name__)
 
@@ -12,6 +13,12 @@ class Lipid:
     def __init__(self, lipidclass: LipidClass = None, residues: ResidueList = None):
         self.residues = residues
         self.lipidclass = lipidclass
+
+    def residue_sum(self) -> Residue:
+        """
+        Sum up all carbon atoms and double bonds of all residues and return the sum.
+        """
+        return self.residues.sum()
 
     @classmethod
     def parse(cls, string: str) -> Lipid:
