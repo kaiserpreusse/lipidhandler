@@ -40,12 +40,11 @@ def test_residuelist_parse():
     assert residuelist[0].carbon_atoms == 16
     assert residuelist[0].double_bonds == 0
     assert residuelist[0].oxidation == 0
-    assert residuelist[0].olinked is True
+    assert residuelist[0].modification.name == 'O-'
 
     assert residuelist[1].carbon_atoms == 18
     assert residuelist[1].double_bonds == 1
     assert residuelist[1].oxidation == 0
-    assert residuelist[1].olinked is False
 
 
 def test_residuelist_sum():
@@ -57,8 +56,8 @@ def test_residuelist_sum():
     assert residuelist.total_double_bonds == 5
     assert residuelist.total_carbon_atoms == 30
 
-def test_residuelist_string():
 
+def test_residuelist_string():
     r1 = Residue(18, 2)
     r2 = Residue(12, 3)
 

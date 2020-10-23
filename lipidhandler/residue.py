@@ -1,5 +1,8 @@
 from __future__ import annotations
 import logging
+import re
+
+from lipidhandler.residuemodification import ResidueModification
 
 log = logging.getLogger(__name__)
 
@@ -7,11 +10,11 @@ log = logging.getLogger(__name__)
 class Residue:
 
     def __init__(self, carbon_atoms: int = None, double_bonds: int = None, oxidation: int = None,
-                 olinked: bool = False):
+                 modification: ResidueModification = None):
         self.carbon_atoms = carbon_atoms
         self.double_bonds = double_bonds
         self.oxidation = oxidation
-        self.olinked = olinked
+        self.modification = modification
 
     @property
     def residue_string(self) -> str:
@@ -21,8 +24,8 @@ class Residue:
         :return: String of the residue.
         """
         base_string = f'{self.carbon_atoms}:{self.double_bonds}'
-        if self.olinked:
-            base_string = f'O-{base_string}'
+        if self.modification:
+            base_string = f'{self.modification.name}{base_string}'
         if self.oxidation:
             base_string = f'{base_string};{self.oxidation}'
         return base_string
@@ -37,10 +40,21 @@ class Residue:
         :return:
         """
 
-        olinked = False
-        if string.strip().startswith('O-'):
-            olinked = True
-            string = string.replace('O-', '')
+        # get modifications
+        modification = False
+        # match if string does not start with digit
+        if not re.match('^[0-9]', string):
+            print(string)
+            # get index of first digit
+            index_first_digit = re.search('[0-9]', string).span()[0]
+            print(index_first_digit)
+            prefix = string[:index_first_digit]
+            print(prefix)
+            modification = ResidueModification(prefix)
+            print(modification)
+            string = string[index_first_digit:]
+            print(string)
+
 
         log.debug(string)
         chain_def = string.split(';')[0]
@@ -51,4 +65,4 @@ class Residue:
         else:
             oxidation = None
 
-        return cls(int(carbon_atoms), int(double_bonds), oxidation, olinked)
+        return cls(int(carbon_atoms), int(double_bonds), oxidation, modification)
