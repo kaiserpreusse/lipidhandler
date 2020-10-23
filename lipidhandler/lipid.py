@@ -15,6 +15,9 @@ class Lipid:
         self.lipidclass = lipidclass
         self._input = None
 
+    def __str__(self) -> str:
+        return self.swisslipids_abbreviation()
+
     def swisslipids_abbreviation(self, summed: bool = False) -> str:
         """
         Return the abbreviation of the lipid in the format preferred by SwissLipids.
