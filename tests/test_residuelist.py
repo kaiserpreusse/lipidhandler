@@ -56,3 +56,11 @@ def test_residuelist_sum():
 
     assert residuelist.total_double_bonds == 5
     assert residuelist.total_carbon_atoms == 30
+
+def test_residuelist_string():
+
+    r1 = Residue(18, 2)
+    r2 = Residue(12, 3)
+
+    residuelist = ResidueList([r1, r2])
+    assert residuelist.residuelist_string == '18:2/12:3'

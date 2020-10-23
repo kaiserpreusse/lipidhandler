@@ -40,6 +40,15 @@ class ResidueList:
             double_bonds += residue.double_bonds
         return double_bonds
 
+    @property
+    def residuelist_string(self) -> str:
+        """
+        Return string of the residue.
+
+        :return: String of the residue.
+        """
+        return '/'.join([r.residue_string for r in self.residues])
+
     def sum(self):
         """
         Return sum of carbon atoms and double bonds of all Residues in this ResidueList as a Residue.

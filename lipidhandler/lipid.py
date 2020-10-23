@@ -14,6 +14,22 @@ class Lipid:
         self.residues = residues
         self.lipidclass = lipidclass
 
+    def swisslipids_abbreviation(self, summed: bool = False) -> str:
+        """
+        Return the abbreviation of the lipid in the format preferred by SwissLipids.
+
+        E.g. CE(16:3)
+
+        You can either return the summed residues or multiple residues.
+
+        :arg summed: Summed or multiple residues.
+        :return: SwissLipids abbreviation of the lipid.
+        """
+        if summed:
+            return f'{self.lipidclass.name}({self.residue_sum().residue_string})'
+        else:
+            return f"{self.lipidclass.name}({self.residues.residuelist_string})"
+
     def residue_sum(self) -> Residue:
         """
         Sum up all carbon atoms and double bonds of all residues and return the sum.

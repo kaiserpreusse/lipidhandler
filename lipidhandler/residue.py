@@ -13,6 +13,20 @@ class Residue:
         self.oxidation = oxidation
         self.olinked = olinked
 
+    @property
+    def residue_string(self) -> str:
+        """
+        Return string of the residue.
+
+        :return: String of the residue.
+        """
+        base_string = f'{self.carbon_atoms}:{self.double_bonds}'
+        if self.olinked:
+            base_string = f'O-{base_string}'
+        if self.oxidation:
+            base_string = f'{base_string};{self.oxidation}'
+        return base_string
+
     @classmethod
     def parse(cls, string: str) -> Residue:
         """
