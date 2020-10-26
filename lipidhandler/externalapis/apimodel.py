@@ -11,4 +11,10 @@ class ExternalApi:
         pass
 
     def search(self, search_term) -> LipidList:
+        """
+        Use the external API to search for a term and return a LipidList.
+
+        :param search_term: The Search term.
+        :return: A LipidList
+        """
         raise NotImplementedError
