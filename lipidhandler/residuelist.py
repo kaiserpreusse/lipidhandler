@@ -1,5 +1,6 @@
 from __future__ import annotations
 import logging
+from typing import List
 
 from lipidhandler.residue import Residue
 
@@ -8,8 +9,11 @@ log = logging.getLogger(__name__)
 
 class ResidueList:
 
-    def __init__(self, residues: list[Residue] = None):
-        self.residues = residues
+    def __init__(self, residues: List[Residue] = None):
+        if residues:
+            self.residues = residues
+        else:
+            self.residues = []
 
     def __len__(self):
         return len(self.residues)
