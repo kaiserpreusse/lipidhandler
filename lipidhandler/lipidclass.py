@@ -10,7 +10,6 @@ class LipidClass:
 
     def __init__(self, name: str = None):
         self.name = name
-
         self._input = input
 
     def __str__(self):
