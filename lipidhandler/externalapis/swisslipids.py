@@ -35,7 +35,17 @@ class SwissLipids(ExternalApi):
     @classmethod
     def get_xrefs(cls, lipid: Lipid, summed: bool = False) -> XrefList:
         xreflist = XrefList()
-        search_result = cls.run_search(lipid.abbreviation(summed))
+
+        try:
+            search_term = lipid.abbreviation(summed)
+        except AttributeError:
+            log.debug(f"No abbreviation for lipid: {lipid.lipidclass}, {lipid.residues}.")
+            try:
+                search_term = lipid.abbreviation()
+            except:
+                raise
+
+        search_result = cls.run_search(search_term)
         # search result can be empyt
         if search_result:
             for entity in cls.run_search(lipid.abbreviation(summed)):

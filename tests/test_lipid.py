@@ -58,6 +58,7 @@ def test_lipid_xreflist():
     )
     assert len(lipid.xreflist) == 1
 
+
 def test_lipid_abbreviation():
     l = Lipid(LipidClass('CE'), ResidueList([Residue(16, 2)]))
 
@@ -72,6 +73,12 @@ def test_lipid_abbreviation():
 
     assert l.abbreviation() == 'CE(O-16:2/18:1)'
     assert l.abbreviation(summed=True) == 'CE(O-34:3)'
+
+    # no residues, assure that abbreviation/summed fails with AttributeError
+    l = Lipid(LipidClass('CE'))
+    assert l.abbreviation() == 'CE'
+    #with pytest.raises(AttributeError):
+    l.abbreviation(summed=True)
 
 
 def test_lipid_check_consistency():

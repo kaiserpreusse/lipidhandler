@@ -64,7 +64,10 @@ class Lipid:
 
             return f'{self.lipidclass.name}({first_modification_string}{self.residue_sum().residue_string})'
         else:
-            return f"{self.lipidclass.name}({self.residues.residuelist_string})"
+            output_string = f"{self.lipidclass.name}"
+            if self.residues:
+                output_string+=f"({self.residues.residuelist_string})"
+            return output_string
 
     def residue_sum(self) -> Residue:
         """
