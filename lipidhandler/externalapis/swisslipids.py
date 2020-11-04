@@ -38,12 +38,10 @@ class SwissLipids(ExternalApi):
 
         try:
             search_term = lipid.abbreviation(summed)
-        except AttributeError:
+        except Exception as e:
             log.debug(f"No abbreviation for lipid: {lipid.lipidclass}, {lipid.residues}.")
-            try:
-                search_term = lipid.abbreviation()
-            except:
-                raise
+            log.error(f"Failed with {e}")
+            search_term = lipid.abbreviation()
 
         search_result = cls.run_search(search_term)
         # search result can be empyt

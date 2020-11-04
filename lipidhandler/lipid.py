@@ -62,18 +62,16 @@ class Lipid:
             if list_of_modifications:
                 first_modification_string = list_of_modifications[0]
 
-            return f'{self.lipidclass.name}({first_modification_string}{self.residue_sum().residue_string})'
+            output_string = f'{self.lipidclass.name}'
+            if self.residues:
+                output_string += f'({first_modification_string}{self.residues.sum().residue_string})'
+
+            return output_string
         else:
             output_string = f"{self.lipidclass.name}"
             if self.residues:
-                output_string+=f"({self.residues.residuelist_string})"
+                output_string += f"({self.residues.residuelist_string})"
             return output_string
-
-    def residue_sum(self) -> Residue:
-        """
-        Sum up all carbon atoms and double bonds of all residues and return the sum.
-        """
-        return self.residues.sum()
 
     def check_consistency(self):
         """
@@ -86,7 +84,8 @@ class Lipid:
             default_modification = CLASS_DEFAULT_MODIFICATION[self.lipidclass.name]
 
             if not self.residues[0].modification == default_modification:
-                log.debug(f'Default modification not correct. Expected {default_modification}, found {self.residues[0].modification}')
+                log.debug(
+                    f'Default modification not correct. Expected {default_modification}, found {self.residues[0].modification}')
                 self.residues[0].modification = default_modification
 
     @classmethod
@@ -131,4 +130,7 @@ class Lipid:
 
             return lipid
 
-
+        else:
+            lipid = Lipid(LipidClass(string))
+            lipid._input = string
+            return lipid

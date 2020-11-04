@@ -43,6 +43,11 @@ class TestLipidParse:
         assert len(lipid.residues[0].zstatelist) == 5
         assert str(lipid.residues[0].zstatelist[1]) == '16Z'
 
+        t = 'chol'
+        lipid = Lipid.parse(t)
+        assert str(lipid.lipidclass) == 'chol'
+
+
     def test_errors(self):
         with pytest.raises(TypeError):
             # string not ending with bracket
@@ -77,8 +82,8 @@ def test_lipid_abbreviation():
     # no residues, assure that abbreviation/summed fails with AttributeError
     l = Lipid(LipidClass('CE'))
     assert l.abbreviation() == 'CE'
-    #with pytest.raises(AttributeError):
-    l.abbreviation(summed=True)
+
+    assert l.abbreviation(summed=True) == 'CE'
 
 
 def test_lipid_check_consistency():

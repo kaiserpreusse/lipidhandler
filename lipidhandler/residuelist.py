@@ -29,20 +29,30 @@ class ResidueList:
     def total_carbon_atoms(self) -> int:
         """
         Sum of all carbon atoms in this ResidueList.
+
+        Only count if there are residues, return None (not 0) if there are no residues.
         """
-        carbon_atoms = 0
+        carbon_atoms = None
         for residue in self.residues:
-            carbon_atoms += residue.carbon_atoms
+            if carbon_atoms is None:
+                carbon_atoms = residue.carbon_atoms
+            else:
+                carbon_atoms += residue.carbon_atoms
         return carbon_atoms
 
     @property
     def total_double_bonds(self) -> int:
         """
         Sum of all double bonds in this ResidueList
+
+        Only count if there are residues, return None (not 0) if there are no residues.
         """
-        double_bonds = 0
+        double_bonds = None
         for residue in self.residues:
-            double_bonds += residue.double_bonds
+            if double_bonds is None:
+                double_bonds = residue.double_bonds
+            else:
+                double_bonds += residue.double_bonds
         return double_bonds
 
     @property
