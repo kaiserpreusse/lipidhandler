@@ -3,6 +3,7 @@ import logging
 from typing import List
 
 from lipidhandler.residue import Residue
+from lipidhandler.helper import remove_outside_brackets
 
 log = logging.getLogger(__name__)
 
@@ -67,14 +68,13 @@ class ResidueList:
         :param string: Input string.
         :return: ResidueList instance.
         """
+        string = string.strip()
         # remove brackets
         log.debug(f'Parse input: {string}')
 
-        if string.count('(') > 1 or string.count(')') > 1:
-            raise NotImplementedError('alternative chains not implemented')
-
-        if '(' in string and ')' in string:
-            string = string.replace('(', '').replace(')', '')
+        # if string.count('(') > 1 or string.count(')') > 1:
+        #     raise NotImplementedError('alternative chains not implemented')
+        string = remove_outside_brackets(string)
 
         # check for residue splitter
         splittable = False
@@ -96,3 +96,5 @@ class ResidueList:
             )
 
         return cls(residues)
+
+

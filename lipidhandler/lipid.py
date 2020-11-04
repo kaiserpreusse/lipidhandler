@@ -79,13 +79,27 @@ class Lipid:
         :param string: The input string.
         :return: An instance of Lipid
         """
-        if string.count('(') > 1 or string.count(')') > 1:
-            raise NotImplementedError('alternative chains not implemented')
-
+        # TODO refactor, too much code repeated in the two if blocks
 
         # identify abbreviation type
         if '(' in string and ')' in string:
-            pass
+            string = string.strip()
+
+            if not string.endswith(')'):
+                raise TypeError(f"Cannot parse abbreviation {string}")
+
+            lipid_class_name = string.split('(', 1)[0]
+            # second part of split at first ( is residue string, add leading ( again!
+            residue_string = '(' + string.split('(', 1)[1]
+
+            lipidclass = LipidClass.parse(lipid_class_name)
+
+            residuelist = ResidueList.parse(residue_string)
+
+            lipid = cls(lipidclass, residuelist)
+            lipid._input = string
+
+            return lipid
 
         # CE 22:4;0
         elif ' ' in string:

@@ -3,6 +3,7 @@ import logging
 import re
 
 from lipidhandler.residuemodification import ResidueModification
+from lipidhandler.zstatelist import ZstateList
 
 log = logging.getLogger(__name__)
 
@@ -10,11 +11,12 @@ log = logging.getLogger(__name__)
 class Residue:
 
     def __init__(self, carbon_atoms: int = None, double_bonds: int = None, oxidation: int = None,
-                 modification: ResidueModification = None):
+                 modification: ResidueModification = None, zstatelist: ZstateList = None):
         self.carbon_atoms = carbon_atoms
         self.double_bonds = double_bonds
         self.oxidation = oxidation
         self.modification = modification
+        self.zstatelist = zstatelist
 
     @property
     def residue_string(self) -> str:
@@ -39,9 +41,22 @@ class Residue:
         :param string:
         :return:
         """
+        string = string.strip()
+
+        modification = False
+        zstatelist = False
+
+        # get zstatelist
+        # check if ( and ) are in string
+        if '(' in string and ')' in string:
+            # get zstate string to continue, add leading ( again
+            zstate_string = '(' + string.split('(', 1)[1]
+            zstatelist = ZstateList.parse(zstate_string)
+
+            # carbon atom part of the string to continue
+            string = string.split('(', 1)[0]
 
         # get modifications
-        modification = False
         # match if string does not start with digit
         if not re.match('^[0-9]', string):
             # get index of first digit
@@ -49,7 +64,6 @@ class Residue:
             prefix = string[:index_first_digit]
             modification = ResidueModification(prefix)
             string = string[index_first_digit:]
-
 
         log.debug(string)
         chain_def = string.split(';')[0]
@@ -60,4 +74,4 @@ class Residue:
         else:
             oxidation = None
 
-        return cls(int(carbon_atoms), int(double_bonds), oxidation, modification)
+        return cls(int(carbon_atoms), int(double_bonds), oxidation, modification, zstatelist)

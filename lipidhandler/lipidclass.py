@@ -13,6 +13,9 @@ class LipidClass:
 
         self._input = input
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def parse(cls, string: str) -> LipidClass:
         """

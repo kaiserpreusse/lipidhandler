@@ -9,6 +9,9 @@ setup(name='lipidhandler',
       author_email='martin.preusse@gmail.com',
       license='MIT',
       packages=find_packages(),
+      install_requires=[
+          'requests'
+      ],
       keywords=['LIPIDS', 'LIPIDOMICS'],
       zip_safe=False,
       classifiers=[

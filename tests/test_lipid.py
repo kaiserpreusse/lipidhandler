@@ -1,3 +1,5 @@
+import pytest
+
 from lipidhandler.lipid import Lipid
 from lipidhandler.residuelist import ResidueList
 from lipidhandler.residue import Residue
@@ -6,23 +8,44 @@ from lipidhandler.residuemodification import ResidueModification
 from lipidhandler.dictionaries import CLASS_DEFAULT_MODIFICATION
 
 
-def test_lipid_parse():
-    t = 'CE 16:2;0'
+class TestLipidParse:
+    def test_parse(self):
+        t = 'CE 16:2;0'
+        lipid = Lipid.parse(t)
+        assert lipid.lipidclass.name == 'CE'
+        assert lipid.residues[0].carbon_atoms == 16
+        assert lipid.residues[0].double_bonds == 2
+        assert lipid.residues[0].oxidation == 0
 
-    lipid = Lipid.parse(t)
+        t = 'CE(16:2;0)'
+        lipid = Lipid.parse(t)
+        assert lipid.lipidclass.name == 'CE'
+        assert lipid.residues[0].carbon_atoms == 16
+        assert lipid.residues[0].double_bonds == 2
+        assert lipid.residues[0].oxidation == 0
 
-    assert lipid.lipidclass.name == 'CE'
-    assert lipid.residues[0].carbon_atoms == 16
-    assert lipid.residues[0].double_bonds == 2
-    assert lipid.residues[0].oxidation == 0
+        t = 'DAG 16:0;0_22:4;0'
+        lipid = Lipid.parse(t)
+        assert lipid.lipidclass.name == 'DG'
+        assert len(lipid.residues) == 2
+        assert lipid.residues[0].carbon_atoms == 16
+        assert lipid.residues[0].double_bonds == 0
+        assert lipid.residues[0].oxidation == 0
 
-    t = 'DAG 16:0;0_22:4;0'
-    lipid = Lipid.parse(t)
-    assert lipid.lipidclass.name == 'DG'
-    assert len(lipid.residues) == 2
-    assert lipid.residues[0].carbon_atoms == 16
-    assert lipid.residues[0].double_bonds == 0
-    assert lipid.residues[0].oxidation == 0
+        t = 'PC(28:5(13Z,16Z,19Z,22Z,25Z)/0:0)'
+        lipid = Lipid.parse(t)
+        assert lipid.lipidclass.name == 'PC'
+        assert len(lipid.residues) == 2
+        assert lipid.residues[0].carbon_atoms == 28
+        assert lipid.residues[0].double_bonds == 5
+        assert lipid.residues[0].oxidation == None
+        assert len(lipid.residues[0].zstatelist) == 5
+        assert str(lipid.residues[0].zstatelist[1]) == '16Z'
+
+    def test_errors(self):
+        with pytest.raises(TypeError):
+            # string not ending with bracket
+            Lipid.parse("CE(14:9(9Z)/8:0")
 
 
 def test_lipid_swisslipids_abbreviation():
