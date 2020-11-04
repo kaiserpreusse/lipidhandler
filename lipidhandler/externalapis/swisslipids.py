@@ -3,16 +3,18 @@ import logging
 
 from lipidhandler.lipidlist import LipidList
 from lipidhandler.lipid import Lipid
+from lipidhandler.xref import Xref
 from lipidhandler.externalapis.apimodel import ExternalApi
 
 log = logging.getLogger(__name__)
 
 
-class SwissLipidsApi(ExternalApi):
+class SwissLipids(ExternalApi):
+    NAME = 'SwissLipids'
     BASE_URL = 'https://www.swisslipids.org/api/index.php'
 
     def __init__(self):
-        super(SwissLipidsApi, self).__init__()
+        super(SwissLipids, self).__init__()
 
     def lipid_from_id(self, swisslipidsid: str) -> Lipid:
         """
@@ -31,8 +33,9 @@ class SwissLipidsApi(ExternalApi):
             if synonym['type'] == 'abbreviation':
                 abbreviation = synonym['name']
 
-                l = Lipid.parse(abbreviation)
-                return l
+                lipid = Lipid.parse(abbreviation)
+                lipid.add_xref(Xref(self.NAME, swisslipidsid))
+                return lipid
 
     def search(self, search_term) -> LipidList:
         lipidlist = LipidList()

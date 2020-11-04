@@ -5,6 +5,7 @@ from lipidhandler.residuelist import ResidueList
 from lipidhandler.residue import Residue
 from lipidhandler.lipidclass import LipidClass
 from lipidhandler.residuemodification import ResidueModification
+from lipidhandler.xref import Xref
 from lipidhandler.dictionaries import CLASS_DEFAULT_MODIFICATION
 
 
@@ -48,20 +49,29 @@ class TestLipidParse:
             Lipid.parse("CE(14:9(9Z)/8:0")
 
 
-def test_lipid_swisslipids_abbreviation():
+def test_lipid_xreflist():
+    t = 'DAG 16:0;0_22:4;0'
+    lipid = Lipid.parse(t)
+
+    lipid.add_xref(
+        Xref('TargetDB', 'targetid')
+    )
+    assert len(lipid.xreflist) == 1
+
+def test_lipid_abbreviation():
     l = Lipid(LipidClass('CE'), ResidueList([Residue(16, 2)]))
 
-    assert l.swisslipids_abbreviation() == 'CE(16:2)'
+    assert l.abbreviation() == 'CE(16:2)'
 
     l = Lipid(LipidClass('CE'), ResidueList([Residue(16, 2), Residue(18, 1)]))
 
-    assert l.swisslipids_abbreviation() == 'CE(16:2/18:1)'
-    assert l.swisslipids_abbreviation(summed=True) == 'CE(34:3)'
+    assert l.abbreviation() == 'CE(16:2/18:1)'
+    assert l.abbreviation(summed=True) == 'CE(34:3)'
 
     l = Lipid(LipidClass('CE'), ResidueList([Residue(16, 2, modification=ResidueModification('O-')), Residue(18, 1)]))
 
-    assert l.swisslipids_abbreviation() == 'CE(O-16:2/18:1)'
-    assert l.swisslipids_abbreviation(summed=True) == 'CE(O-34:3)'
+    assert l.abbreviation() == 'CE(O-16:2/18:1)'
+    assert l.abbreviation(summed=True) == 'CE(O-34:3)'
 
 
 def test_lipid_check_consistency():

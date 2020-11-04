@@ -2,6 +2,12 @@ from lipidhandler.residuelist import ResidueList
 from lipidhandler.residue import Residue
 
 
+def test_residuelist():
+    residuelist = ResidueList()
+
+    assert len(residuelist) == 0
+
+
 def test_residuelist_parse():
     test_string = '18:1;0_19:1;0'
 

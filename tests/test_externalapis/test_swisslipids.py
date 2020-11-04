@@ -1,12 +1,12 @@
 import pytest
 
 from lipidhandler.lipid import Lipid
-from lipidhandler.externalapis.swisslipidsapi import SwissLipidsApi
+from lipidhandler.externalapis.swisslipids import SwissLipids
 
 
 @pytest.mark.externalapi
 def test_swisslipids_entity():
-    sl = SwissLipidsApi()
+    sl = SwissLipids()
 
     lipid = sl.lipid_from_id('SLM:000020715')
 
@@ -21,7 +21,7 @@ def test_swisslipids_entity():
 
 @pytest.mark.externalapi
 def test_swisslipids_search():
-    sl = SwissLipidsApi()
+    sl = SwissLipids()
 
     lipidlist = sl.search('CE 20:2')
 

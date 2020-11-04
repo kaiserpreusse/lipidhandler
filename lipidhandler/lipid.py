@@ -3,6 +3,8 @@ import logging
 
 from lipidhandler.residuelist import ResidueList
 from lipidhandler.lipidclass import LipidClass
+from lipidhandler.xreflist import XrefList
+from lipidhandler.xref import Xref
 from lipidhandler.residue import Residue
 from lipidhandler.dictionaries import CLASS_DEFAULT_MODIFICATION
 
@@ -11,17 +13,30 @@ log = logging.getLogger(__name__)
 
 class Lipid:
 
-    def __init__(self, lipidclass: LipidClass = None, residues: ResidueList = None):
-        self.residues = residues
+    def __init__(self, lipidclass: LipidClass = None, residues: ResidueList = None, xreflist: XrefList = None):
+        if residues:
+            self.residues = residues
+        else:
+            self.residues = ResidueList()
+
         self.lipidclass = lipidclass
+
+        if xreflist:
+            self.xreflist = xreflist
+        else:
+            self.xreflist = XrefList()
+
         self._input = None
 
     def __str__(self) -> str:
-        return self.swisslipids_abbreviation()
+        return self.abbreviation()
 
-    def swisslipids_abbreviation(self, summed: bool = False) -> str:
+    def add_xref(self, xref: Xref) -> None:
+        self.xreflist.append(xref)
+
+    def abbreviation(self, summed: bool = False) -> str:
         """
-        Return the abbreviation of the lipid in the format preferred by SwissLipids.
+        Return the abbreviation of the lipid.
 
         E.g. CE(16:3)
 
@@ -61,7 +76,7 @@ class Lipid:
         """
         Check consistency of the Lipid and modify as necessary.
         """
-        log.debug(f'Check consistency of {self.swisslipids_abbreviation()}, input was {self._input}')
+        log.debug(f'Check consistency of {self.abbreviation()}, input was {self._input}')
 
         # check for modifications depending on class
         if self.lipidclass.name in CLASS_DEFAULT_MODIFICATION:
