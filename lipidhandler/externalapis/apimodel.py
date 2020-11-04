@@ -1,6 +1,7 @@
 import logging
 
 from lipidhandler.lipidlist import LipidList
+from lipidhandler.lipid import Lipid
 
 log = logging.getLogger(__name__)
 
@@ -16,5 +17,14 @@ class ExternalApi:
 
         :param search_term: The Search term.
         :return: A LipidList
+        """
+        raise NotImplementedError
+
+    def get_xrefs(self, lipid: Lipid) -> Lipid:
+        """
+        Takes a `Lipid` instance as input and searches for entities in the specified database.
+
+        :param lipid: The input lipid.
+        :return: The lipid with Xrefs.
         """
         raise NotImplementedError

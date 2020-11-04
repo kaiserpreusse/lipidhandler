@@ -7,5 +7,5 @@ class Xref:
     """
 
     def __init__(self, target_db: str, target_id: str):
-        self.target = target_db
+        self.target_db = target_db
         self.target_id = target_id

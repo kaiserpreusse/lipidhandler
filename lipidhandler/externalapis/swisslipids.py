@@ -16,6 +16,24 @@ class SwissLipids(ExternalApi):
     def __init__(self):
         super(SwissLipids, self).__init__()
 
+    def search(self, search_term: str) -> LipidList:
+        lipidlist = LipidList()
+
+        for entity in self.run_search(search_term):
+            swisslipidsid = entity['entity_id']
+            lipidlist.append(
+                self.lipid_from_id(swisslipidsid)
+            )
+
+        return lipidlist
+
+    def get_xrefs(self, lipid: Lipid, summed: bool = False) -> Lipid:
+
+        for entity in self.run_search(lipid.abbreviation(summed)):
+            lipid.add_xref(Xref(self.NAME, entity['entity_id']))
+
+        return lipid
+
     def lipid_from_id(self, swisslipidsid: str) -> Lipid:
         """
         Call API to get details for a SwissLipids ID.
@@ -37,18 +55,17 @@ class SwissLipids(ExternalApi):
                 lipid.add_xref(Xref(self.NAME, swisslipidsid))
                 return lipid
 
-    def search(self, search_term) -> LipidList:
-        lipidlist = LipidList()
+    def run_search(self, search_term: str) -> dict:
+        """
+        Run a search against the SwissLipids API and return JSON result.
 
+        :param search_term: The search term.
+        :return: Result as JSON
+        """
         request_url = self.BASE_URL + f'/search?term={search_term}'
         log.debug(f"Request URL: {request_url}")
 
         result = requests.get(request_url).json()
 
-        for entity in result:
-            swisslipidsid = entity['entity_id']
-            lipidlist.append(
-                self.lipid_from_id(swisslipidsid)
-            )
+        return result
 
-        return lipidlist

@@ -28,3 +28,16 @@ def test_swisslipids_search():
     for lipid in lipidlist:
         assert isinstance(lipid, Lipid)
         assert str(lipid.lipidclass) == 'CE'
+
+@pytest.mark.externalapi
+def test_swisslipids_xref():
+    lipid = Lipid.parse('CE(20:2)')
+
+    sl = SwissLipids()
+
+    lipid = sl.get_xrefs(lipid)
+
+    for xref in lipid.xreflist:
+        assert xref.target_db == SwissLipids.NAME
+
+    assert any(x.target_id == 'SLM:000500283' for x in lipid.xreflist)
