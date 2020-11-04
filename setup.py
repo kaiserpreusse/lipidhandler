@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='lipidhandler',
-      version='0.0.2',
+      version='0.0.4',
       description='Handle lipid names in Python.',
       long_description_content_type='text/markdown',
       url='https://github.com/kaiserpreusse/lipidhandler',
