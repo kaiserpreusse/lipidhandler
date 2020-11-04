@@ -6,9 +6,8 @@ from lipidhandler.externalapis.swisslipids import SwissLipids
 
 @pytest.mark.externalapi
 def test_swisslipids_entity():
-    sl = SwissLipids()
 
-    lipid = sl.lipid_from_id('SLM:000020715')
+    lipid = SwissLipids.lipid_from_id('SLM:000020715')
 
     assert lipid.lipidclass.name == 'PC'
     assert len(lipid.residues) == 2
@@ -18,24 +17,27 @@ def test_swisslipids_entity():
     assert len(lipid.residues[0].zstatelist) == 5
     assert str(lipid.residues[0].zstatelist[1]) == '16Z'
 
-
 @pytest.mark.externalapi
-def test_swisslipids_search():
-    sl = SwissLipids()
+class TestSwissLipidsSearch:
 
-    lipidlist = sl.search('CE 20:2')
+    def test_search(self):
 
-    for lipid in lipidlist:
-        assert isinstance(lipid, Lipid)
-        assert str(lipid.lipidclass) == 'CE'
+        lipidlist = SwissLipids.search('CE 20:2')
+
+        for lipid in lipidlist:
+            assert isinstance(lipid, Lipid)
+            assert str(lipid.lipidclass) == 'CE'
+
+    def test_search_no_result(self):
+        empty_lipidlist = SwissLipids.search('klsdjghlzksfghj')
+        assert len(empty_lipidlist) == 0
+
 
 @pytest.mark.externalapi
 def test_swisslipids_xref():
     lipid = Lipid.parse('CE(20:2)')
 
-    sl = SwissLipids()
-
-    lipid = sl.get_xrefs(lipid)
+    lipid = SwissLipids.get_xrefs(lipid)
 
     for xref in lipid.xreflist:
         assert xref.target_db == SwissLipids.NAME
