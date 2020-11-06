@@ -14,34 +14,34 @@ class TestLipidParse:
         t = 'CE 16:2;0'
         lipid = Lipid.parse(t)
         assert lipid.lipidclass.name == 'CE'
-        assert lipid.residues[0].carbon_atoms == 16
-        assert lipid.residues[0].double_bonds == 2
-        assert lipid.residues[0].oxidation == 0
+        assert lipid.residueslist[0].carbon_atoms == 16
+        assert lipid.residueslist[0].double_bonds == 2
+        assert lipid.residueslist[0].oxidation == 0
 
         t = 'CE(16:2;0)'
         lipid = Lipid.parse(t)
         assert lipid.lipidclass.name == 'CE'
-        assert lipid.residues[0].carbon_atoms == 16
-        assert lipid.residues[0].double_bonds == 2
-        assert lipid.residues[0].oxidation == 0
+        assert lipid.residueslist[0].carbon_atoms == 16
+        assert lipid.residueslist[0].double_bonds == 2
+        assert lipid.residueslist[0].oxidation == 0
 
         t = 'DAG 16:0;0_22:4;0'
         lipid = Lipid.parse(t)
         assert lipid.lipidclass.name == 'DG'
-        assert len(lipid.residues) == 2
-        assert lipid.residues[0].carbon_atoms == 16
-        assert lipid.residues[0].double_bonds == 0
-        assert lipid.residues[0].oxidation == 0
+        assert len(lipid.residueslist) == 2
+        assert lipid.residueslist[0].carbon_atoms == 16
+        assert lipid.residueslist[0].double_bonds == 0
+        assert lipid.residueslist[0].oxidation == 0
 
         t = 'PC(28:5(13Z,16Z,19Z,22Z,25Z)/0:0)'
         lipid = Lipid.parse(t)
         assert lipid.lipidclass.name == 'PC'
-        assert len(lipid.residues) == 2
-        assert lipid.residues[0].carbon_atoms == 28
-        assert lipid.residues[0].double_bonds == 5
-        assert lipid.residues[0].oxidation == None
-        assert len(lipid.residues[0].zstatelist) == 5
-        assert str(lipid.residues[0].zstatelist[1]) == '16Z'
+        assert len(lipid.residueslist) == 2
+        assert lipid.residueslist[0].carbon_atoms == 28
+        assert lipid.residueslist[0].double_bonds == 5
+        assert lipid.residueslist[0].oxidation == None
+        assert len(lipid.residueslist[0].zstatelist) == 5
+        assert str(lipid.residueslist[0].zstatelist[1]) == '16Z'
 
         t = 'chol'
         lipid = Lipid.parse(t)
@@ -90,9 +90,9 @@ def test_lipid_check_consistency():
     l = Lipid(LipidClass('Cer'), ResidueList([Residue(16, 2), Residue(18, 1)]))
 
     # check inconsistent state
-    assert l.residues[0].modification == None
+    assert l.residueslist[0].modification == None
 
     l.check_consistency()
 
     # check consistent state
-    assert l.residues[0].modification == CLASS_DEFAULT_MODIFICATION['Cer']
+    assert l.residueslist[0].modification == CLASS_DEFAULT_MODIFICATION['Cer']

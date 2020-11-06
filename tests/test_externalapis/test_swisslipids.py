@@ -10,12 +10,12 @@ def test_swisslipids_entity():
     lipid = SwissLipids.lipid_from_id('SLM:000020715')
 
     assert lipid.lipidclass.name == 'PC'
-    assert len(lipid.residues) == 2
-    assert lipid.residues[0].carbon_atoms == 28
-    assert lipid.residues[0].double_bonds == 5
-    assert lipid.residues[0].oxidation == None
-    assert len(lipid.residues[0].zstatelist) == 5
-    assert str(lipid.residues[0].zstatelist[1]) == '16Z'
+    assert len(lipid.residueslist) == 2
+    assert lipid.residueslist[0].carbon_atoms == 28
+    assert lipid.residueslist[0].double_bonds == 5
+    assert lipid.residueslist[0].oxidation == None
+    assert len(lipid.residueslist[0].zstatelist) == 5
+    assert str(lipid.residueslist[0].zstatelist[1]) == '16Z'
 
 @pytest.mark.externalapi
 class TestSwissLipidsSearch:

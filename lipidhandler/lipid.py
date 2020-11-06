@@ -13,11 +13,11 @@ log = logging.getLogger(__name__)
 
 class Lipid:
 
-    def __init__(self, lipidclass: LipidClass = None, residues: ResidueList = None, xreflist: XrefList = None):
-        if residues:
-            self.residues = residues
+    def __init__(self, lipidclass: LipidClass = None, residuelist: ResidueList = None, xreflist: XrefList = None):
+        if residuelist:
+            self.residueslist = residuelist
         else:
-            self.residues = ResidueList()
+            self.residueslist = ResidueList()
 
         self.lipidclass = lipidclass
 
@@ -50,12 +50,12 @@ class Lipid:
             # TODO understand modification logic and adapt this
             # collect modifications, still unclear what the logic is here
             list_of_modifications = []
-            for r in self.residues:
+            for r in self.residueslist:
                 if r.modification:
                     list_of_modifications.append(r.modification.name)
             # assert that we only have one modification, figure out if mulitple are ok
             if len(list_of_modifications) > 1:
-                log.error(self.residues)
+                log.error(self.residueslist)
                 log.error(list_of_modifications)
                 raise TypeError("Only one modification per ResidueList allowed")
             # if there is zero or one modifications, continue and pick first one
@@ -63,14 +63,14 @@ class Lipid:
                 first_modification_string = list_of_modifications[0]
 
             output_string = f'{self.lipidclass.name}'
-            if self.residues:
-                output_string += f'({first_modification_string}{self.residues.sum().residue_string})'
+            if self.residueslist:
+                output_string += f'({first_modification_string}{self.residueslist.sum().residue_string})'
 
             return output_string
         else:
             output_string = f"{self.lipidclass.name}"
-            if self.residues:
-                output_string += f"({self.residues.residuelist_string})"
+            if self.residueslist:
+                output_string += f"({self.residueslist.residuelist_string})"
             return output_string
 
     def check_consistency(self):
@@ -83,10 +83,10 @@ class Lipid:
         if self.lipidclass.name in CLASS_DEFAULT_MODIFICATION:
             default_modification = CLASS_DEFAULT_MODIFICATION[self.lipidclass.name]
 
-            if not self.residues[0].modification == default_modification:
+            if not self.residueslist[0].modification == default_modification:
                 log.debug(
-                    f'Default modification not correct. Expected {default_modification}, found {self.residues[0].modification}')
-                self.residues[0].modification = default_modification
+                    f'Default modification not correct. Expected {default_modification}, found {self.residueslist[0].modification}')
+                self.residueslist[0].modification = default_modification
 
     @classmethod
     def parse(cls, string: str) -> Lipid:

@@ -39,7 +39,7 @@ class SwissLipids(ExternalApi):
         try:
             search_term = lipid.abbreviation(summed)
         except Exception as e:
-            log.debug(f"No abbreviation for lipid: {lipid.lipidclass}, {lipid.residues}.")
+            log.debug(f"No abbreviation for lipid: {lipid.lipidclass}, {lipid.residueslist}.")
             log.error(f"Failed with {e}")
             search_term = lipid.abbreviation()
 
