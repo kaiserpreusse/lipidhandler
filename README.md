@@ -68,7 +68,7 @@ chemical modification descriptor and details on the isomer.
 ##### Oxidation state
 ```python
 mylipid = Lipid.parse("CE(16:1;0)")
-print(mylipid.residues[0].oxidation)
+print(mylipid.residueslist[0].oxidation)
 
 >>> 0
 ```
@@ -76,7 +76,7 @@ print(mylipid.residues[0].oxidation)
 
 ```python
 mylipid = Lipid.parse("PE(O-16:1)")
-print(mylipid.residues[0].modification)
+print(mylipid.residueslist[0].modification)
 
 >>> O-
 ```
@@ -85,7 +85,7 @@ print(mylipid.residues[0].modification)
 
 ```python
 mylipid = Lipid.parse("CE(16:1(6Z))")
-print(mylipid.residues[0].zstatelist[0]
+print(mylipid.residueslist[0].zstatelist[0]
 
 >>> 6Z
 ```
