@@ -22,6 +22,11 @@ LipidHandler does not replace toolkits to work with molecules and chemical struc
 
 > :mailbox: Feedback through GitHub issues is appreciated.
 
+## install
+
+`pip install lipidhandler`
+
+
 ## Getting started
 
 ### Work with lipid names
@@ -144,10 +149,6 @@ for xref in db_xrefs:
 
 >>> SwissLipids SLM:00050028
 ```
-
-## install
-
-`pip install lipidhandler`
 
 ## develop
 
